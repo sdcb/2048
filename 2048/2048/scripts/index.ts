@@ -16,11 +16,7 @@ module _2048 {
             document.addEventListener('resume', onResume, false);
 
             // TODO: Cordova 已加载。在此处执行任何需要 Cordova 的初始化。
-            var parentElement = document.getElementById('deviceready');
-            var listeningElement = parentElement.querySelector('.listening');
-            var receivedElement = parentElement.querySelector('.received');
-            listeningElement.setAttribute('style', 'display:none;');
-            receivedElement.setAttribute('style', 'display:block;');
+            var canvas = <HTMLCanvasElement>document.querySelector("canvas");
         }
 
         function onPause() {

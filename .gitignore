@@ -251,3 +251,5 @@ paket-files/
 .idea/
 *.sln.iml
 /2048/2048/www/scripts
+/2048/www/scripts/appBundle.js.map
+/2048/www/scripts/appBundle.js
