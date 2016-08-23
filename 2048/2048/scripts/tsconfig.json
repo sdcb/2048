@@ -6,7 +6,8 @@
     "sourceMap": true,
     "inlineSources": true,
     "out": "../www/scripts/appBundle.js",
-    "target": "es5"
+    "target": "es6", 
+    "strictNullChecks": true
   }, 
   "compileOnSave": true
 }
