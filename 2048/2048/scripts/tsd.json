@@ -1,0 +1,12 @@
+{
+  "version": "v4",
+  "repo": "borisyankov/DefinitelyTyped",
+  "ref": "master",
+  "path": "typings",
+  "bundle": "typings/tsd.d.ts",
+  "installed": {
+    "hammerjs/hammerjs.d.ts": {
+      "commit": "324169800cb792855a96272f5d58f646e7b1d56d"
+    }
+  }
+}

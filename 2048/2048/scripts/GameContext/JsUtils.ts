@@ -3,6 +3,13 @@
         return <Array<T>>Array.apply(null, { length: arraySize });
     }
 
+    export function NN<T>(v: T | null | undefined): T {
+        if (v === undefined || v === null) {
+            throw new Error("v should never be null or undefined.");
+        }
+        return v;
+    }
+
     export function animate(intialValue: number, setValue: (currentValue: number) => void) {
         let ctx = new AnimateContext(intialValue, setValue);
         return new AnimateToContext(ctx);
@@ -44,8 +51,8 @@
         }
 
         startUpdate() {
-            this.update();
             this.startTime = new Date().getTime();
+            this.update();
             return new Promise<void>((resolve, reject) => {
                 this.resolve = resolve;
                 this.reject = reject;

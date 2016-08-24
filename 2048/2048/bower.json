@@ -1,5 +1,6 @@
 {
-    "name": "2048",
-    "dependencies": {
-    }
+  "name": "2048",
+  "dependencies": {
+    "hammerjs": "2.0.8"
+  }
 }

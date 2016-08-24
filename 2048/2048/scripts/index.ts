@@ -7,16 +7,16 @@ module _2048 {
 
     export module Application {
         export function initialize() {
-            document.addEventListener('deviceready', onDeviceReady, false);
+            document.addEventListener("deviceready", onDeviceReady, false);
         }
 
         function onDeviceReady() {
             // 处理 Cordova 暂停并恢复事件
-            document.addEventListener('pause', onPause, false);
-            document.addEventListener('resume', onResume, false);
+            document.addEventListener("pause", onPause, false);
+            document.addEventListener("resume", onResume, false);
 
             // TODO: Cordova 已加载。在此处执行任何需要 Cordova 的初始化。
-            var canvas = <HTMLCanvasElement>document.querySelector("canvas");
+            var view = new GameView();
         }
 
         function onPause() {
