@@ -35,7 +35,7 @@
             this.x = x;
             this.y = y;
 
-            return Promise.all([
+            return $.when([
                 animate(this.displayX, v => this.displayX = v).to(x).in(AnimateDurationMs),
                 animate(this.displayY, v => this.displayY = v).to(y).in(AnimateDurationMs)
             ]);
@@ -48,7 +48,7 @@
         moveToAndGrow(box: Box) {
             this.n = box.n;
 
-            return Promise.all([
+            return $.when([
                 this.moveTo(box.x, box.y), 
                 animate(this.displaySize, v => this.displaySize = v).to(box.n).in(AnimateDurationMs)
             ]);

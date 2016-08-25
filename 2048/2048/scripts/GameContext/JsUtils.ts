@@ -44,6 +44,7 @@
 
         resolve: (value?: void | PromiseLike<void>) => void;
         reject: (reason?: any) => void;
+        defer: JQueryDeferred<void>;
 
         constructor(
             public intialValue: number,
@@ -53,10 +54,7 @@
         startUpdate() {
             this.startTime = new Date().getTime();
             this.update();
-            return new Promise<void>((resolve, reject) => {
-                this.resolve = resolve;
-                this.reject = reject;
-            });
+            this.defer = $.Deferred<void>();
         }
 
         update() {
@@ -70,6 +68,7 @@
                 requestAnimationFrame(() => this.update());
             } else {
                 this.setValue(this.finalValue);
+                this.defer.resolve();
             }
         }
     }

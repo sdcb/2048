@@ -7,6 +7,9 @@
   "installed": {
     "hammerjs/hammerjs.d.ts": {
       "commit": "324169800cb792855a96272f5d58f646e7b1d56d"
+    },
+    "jquery/jquery.d.ts": {
+      "commit": "23c9f2230960c4a9b83e4297471d082a27d02b74"
     }
   }
 }
