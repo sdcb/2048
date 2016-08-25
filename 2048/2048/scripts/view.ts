@@ -59,11 +59,13 @@
         render() {
             let blockWidth = this.width / this.game.size.x;
             let blockHeight = this.height / this.game.size.y;
+            this.ctx.beginPath();
             for (let x = 0; x < this.game.size.x; ++x) {
                 for (let y = 0; y < this.game.size.y; ++y) {
                     this.ctx.rect(x * blockWidth, y * blockHeight, blockWidth, blockHeight);
                 }
             }
+            this.ctx.stroke();
 
             for (let cell of this.game.getCells()) {
                 let attr = this.cellAttr(cell.n);
@@ -71,8 +73,8 @@
                 this.ctx.save();
                 this.ctx.fillStyle = attr.background;
                 this.ctx.fillRect(
-                    cell.displayX * blockWidth,
-                    cell.displayY * blockHeight, blockWidth, blockHeight);
+                    cell.displayX * blockWidth + 1,
+                    cell.displayY * blockHeight + 1, blockWidth - 1, blockHeight - 1);
                 this.ctx.restore();
 
                 this.ctx.save();
@@ -85,7 +87,6 @@
                     cell.displayY * blockHeight + blockWidth / 2);
                 this.ctx.restore();
             }
-            this.ctx.stroke();
         }
 
         cellAttr(size: number) {
