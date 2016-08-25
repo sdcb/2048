@@ -109,9 +109,9 @@
         }
 
         private getCellTable() {
-            let cells = createArray<Array<Cell | undefined>>(this.size.y);
+            let cells = createArray<Array<Cell | undefined>>(this.size.x);
             for (let i = 0; i < cells.length; ++i) {
-                cells[i] = createArray<Cell | undefined>(this.size.x);
+                cells[i] = createArray<Cell | undefined>(this.size.y);
             }
 
             for (let cell of this.cells) {
