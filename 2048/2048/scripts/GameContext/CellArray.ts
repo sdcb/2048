@@ -135,13 +135,7 @@
         }
 
         constructor(public size: Vector2d) {
-            let array = [
-                [0, 0, 0, 0], 
-                [0, 0, 0, 0], 
-                [0, 0, 0, 0], 
-                [8, 0, 0, 0], 
-            ];
-            this.initializeWithArray(array);
+            this.initialize();
         }
 
         initialize() {
