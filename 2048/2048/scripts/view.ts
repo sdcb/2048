@@ -66,7 +66,7 @@
                 }
             }
             for (let cell of this.game.getCells()) {
-                this.ctx.strokeText(cell.n.toString(),
+                this.ctx.strokeText(cell.size.toString(),
                     cell.displayX * blockWidth + blockWidth / 2,
                     cell.displayY * blockHeight + blockWidth / 2);
             }

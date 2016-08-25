@@ -1,14 +1,26 @@
 ﻿namespace _2048 {
-    export class Cell {
+    export class Box {
+        constructor(
+            public x: number,
+            public y: number,
+            public size: number) {
+        }
+    }
+
+    export class Cell extends Box {
         displayX: number;
         displayY: number;
+        displaySize: number;
+        deleted = false;
 
         private constructor(
             public x: number,
             public y: number,
-            public n: number) {
+            public size: number) {
+            super(x, y, size);
             this.displayX = x;
             this.displayY = y;
+            this.displaySize = size;
         }
 
         position() {
@@ -21,7 +33,21 @@
 
             return Promise.all([
                 animate(this.displayX, v => this.displayX = v).to(x).in(100),
-                animate(this.displayY, v => this.displayY = v).to(y).in(100)]);
+                animate(this.displayY, v => this.displayY = v).to(y).in(100)
+            ]);
+        }
+
+        getBox() {
+            return new Box(this.x, this.y, this.size);
+        }
+
+        moveToAndGrow(box: Box) {
+            this.size = box.size;
+
+            return Promise.all([
+                this.moveTo(box.x, box.y), 
+                animate(this.displaySize, v => this.displaySize = v).to(box.size).in(100)
+            ]);
         }
 
         static createAt(x: number, y: number) {

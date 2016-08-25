@@ -8,7 +8,7 @@
         }
 
         getScore() {
-            return this.cells.reduce((a, b) => a + b.n, 0);
+            return this.cells.reduce((a, b) => a + b.size, 0);
         }
 
         getCells() {
@@ -21,39 +21,50 @@
             }
 
             let cellsOrdered = this.cellsOrderByDirection(direction);
-            let moves = cellsOrdered.map(cell => {
+
+            cellsOrdered.map(cell => {
+                if (cell.deleted) return;
+
                 let allPositions = this.findAllPositionInDirection(direction, cell.position());
-                let targetPosition = this.findFirstAvailablePosition(allPositions);
-                if (targetPosition !== undefined) {
-                    return cell.moveTo(targetPosition.x, targetPosition.y);
+                let table = this.getCellTable();
+
+                let targetCell = cell.getBox();
+                for (let position of allPositions) {
+                    let nextCell = table[position.x][position.y];
+                    if (nextCell === undefined) {
+                        targetCell.x = position.x;
+                        targetCell.y = position.y;
+                    } else if (nextCell.size === targetCell.size) {
+                        targetCell.x = position.x;
+                        targetCell.y = position.y;
+                        targetCell.size += nextCell.size;
+                        nextCell.deleted = true;
+                    } else {
+                        break;
+                    }
                 }
+                return cell.moveToAndGrow(targetCell);
             });
-            if (moves.some(v => v !== undefined)) {
-                this.createRandomCell();
+            this.cells = this.cells.filter(x => x.deleted === false);
+
+            let newCell = this.newRandomCell();
+            if (newCell === null) {
+                this.gameOver = true;
+            } else {
+                this.cells.push(newCell);
             }
-        }
-
-        private createRandomCell() {
-            let randomPosition = this.getRandomPosition();
-            this.cells.push(Cell.createAt(randomPosition.x, randomPosition.y));
-        }
-
-        private getRandomPosition() {
-            let emptyPositions = this.getEmptyCellPositions();
-            let randomIndex = Math.floor(emptyPositions.length * Math.random());
-            return emptyPositions[randomIndex];
         }
 
         private cellsOrderByDirection(direction: Direction) {
             switch (direction) {
                 case Direction.Up:
-                    return this.cells.sort((a, b) => a.y - b.y);
-                case Direction.Down:
                     return this.cells.sort((a, b) => b.y - a.y);
+                case Direction.Down:
+                    return this.cells.sort((a, b) => a.y - b.y);
                 case Direction.Left:
-                    return this.cells.sort((a, b) => a.x - b.x);
-                case Direction.Right:
                     return this.cells.sort((a, b) => b.x - a.x);
+                case Direction.Right:
+                    return this.cells.sort((a, b) => a.x - b.x);
                 default:
                     throw new Error(`Unknown Direction: ${direction}.`);
             }
@@ -63,13 +74,13 @@
             switch (movingDirection) {
                 case Direction.Up:
                     return createArray<Vector2d>(currentPosition.y)
-                        .map((v, i) => new Vector2d(currentPosition.x, i));
+                        .map((v, i) => new Vector2d(currentPosition.x, currentPosition.y - i - 1));
                 case Direction.Down:
                     return createArray<Vector2d>(this.size.y - currentPosition.y - 1)
-                        .map((v, i) => new Vector2d(currentPosition.x, this.size.y - i - 1));
+                        .map((v, i) => new Vector2d(currentPosition.x, currentPosition.y + i + 1));
                 case Direction.Left:
                     return createArray<Vector2d>(currentPosition.x)
-                        .map((v, i) => new Vector2d(i, currentPosition.y));
+                        .map((v, i) => new Vector2d(currentPosition.x - i - 1, currentPosition.y));
                 case Direction.Right:
                     return createArray<Vector2d>(this.size.x - currentPosition.x - 1)
                         .map((v, i) => new Vector2d(currentPosition.x + i + 1, currentPosition.y));
@@ -78,9 +89,13 @@
             }
         }
 
-        private findFirstAvailablePosition(points: Vector2d[]) {
-            var table = this.getCellTable();
-            return points.find(v => table[v.x][v.y] === undefined);
+        private newRandomCell() {
+            let emptyPositions = this.getEmptyCellPositions();
+            if (emptyPositions.length === 0) return null;
+
+            let randomIndex = Math.floor(emptyPositions.length * Math.random());
+            let randomPosition = emptyPositions[randomIndex];
+            return Cell.createAt(randomPosition.x, randomPosition.y);
         }
 
         private getCellTable() {
@@ -110,8 +125,8 @@
         }
 
         constructor(public size: Vector2d) {
-            this.createRandomCell();
-            this.createRandomCell();
+            this.cells.push(NN(this.newRandomCell()));
+            this.cells.push(NN(this.newRandomCell()));
         }
 
         public static create() {
