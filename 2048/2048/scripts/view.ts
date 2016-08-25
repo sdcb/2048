@@ -50,7 +50,6 @@
 
         constructor() {
             super(<HTMLCanvasElement>document.querySelector("canvas"));
-            console.log(this.game.getCells());
         }
 
         swiped(direction: Direction) {
@@ -65,12 +64,96 @@
                     this.ctx.rect(x * blockWidth, y * blockHeight, blockWidth, blockHeight);
                 }
             }
+
             for (let cell of this.game.getCells()) {
-                this.ctx.strokeText(cell.size.toString(),
+                let attr = this.cellAttr(cell.n);
+
+                this.ctx.save();
+                this.ctx.fillStyle = attr.background;
+                this.ctx.fillRect(
+                    cell.displayX * blockWidth,
+                    cell.displayY * blockHeight, blockWidth, blockHeight);
+                this.ctx.restore();
+
+                this.ctx.save();
+                this.ctx.fillStyle = attr.color;
+                this.ctx.font = `${attr.fontSize}px Arial`;
+                this.ctx.textBaseline = "middle";
+                this.ctx.textAlign = "center";
+                this.ctx.fillText(cell.n.toString(),
                     cell.displayX * blockWidth + blockWidth / 2,
                     cell.displayY * blockHeight + blockWidth / 2);
+                this.ctx.restore();
             }
             this.ctx.stroke();
+        }
+
+        cellAttr(size: number) {
+            let colorMap = {
+                [2]: {
+                    background: "#eee4da",
+                },
+                [4]: {
+                    background: "#ede0c8"
+                },
+                [8]: {
+                    color: "#f9f6f2",
+                    background: "#f2b179"
+                },
+                [16]: {
+                    color: "#f9f6f2",
+                    background: "#f59563"
+                },
+                [32]: {
+                    color: "#f9f6f2",
+                    background: "#f67c5f"
+                },
+                [64]: {
+                    color: "#f9f6f2",
+                    background: "#f65e3b"
+                },
+                [128]: {
+                    color: "#f9f6f2",
+                    background: "#edcf72",
+                    fontSize: 45,
+                },
+                [256]: {
+                    color: "#f9f6f2",
+                    background: "#edcc61",
+                    fontSize: 45,
+                },
+                [512]: {
+                    color: "#f9f6f2",
+                    background: "#edc850",
+                    fontSize: 45,
+                },
+                [1024]: {
+                    color: "#f9f6f2",
+                    background: "#edc53f",
+                    fontSize: 35,
+                },
+                [2048]: {
+                    color: "#f9f6f2",
+                    background: "#3c3a32",
+                    fontSize: 35,
+                },
+                [4096]: {
+                    color: "#f9f6f2",
+                    background: "#3c3a32",
+                    fontSize: 30
+                }
+            };
+            let defaultSetting = {
+                fontSize: 55,
+                color: "#776e65",
+                background: "#eee4da"
+            };
+            let item = colorMap[size];
+            return {
+                fontSize: item.fontSize || defaultSetting.fontSize,
+                color: item.color || defaultSetting.color,
+                background: item.background || defaultSetting.background
+            };
         }
     }
 }

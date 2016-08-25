@@ -3,24 +3,28 @@
         constructor(
             public x: number,
             public y: number,
-            public size: number) {
+            public n: number) {
         }
     }
 
+    const AnimateDurationMs = 100;
     export class Cell extends Box {
         displayX: number;
         displayY: number;
-        displaySize: number;
+        displaySize = 0;
         deleted = false;
 
         private constructor(
             public x: number,
             public y: number,
-            public size: number) {
-            super(x, y, size);
+            public n: number) {
+            super(x, y, n);
             this.displayX = x;
             this.displayY = y;
-            this.displaySize = size;
+
+            animate(this.displaySize, v => this.displaySize = v)
+                .to(1)
+                .in(AnimateDurationMs);
         }
 
         position() {
@@ -32,21 +36,21 @@
             this.y = y;
 
             return Promise.all([
-                animate(this.displayX, v => this.displayX = v).to(x).in(100),
-                animate(this.displayY, v => this.displayY = v).to(y).in(100)
+                animate(this.displayX, v => this.displayX = v).to(x).in(AnimateDurationMs),
+                animate(this.displayY, v => this.displayY = v).to(y).in(AnimateDurationMs)
             ]);
         }
 
         getBox() {
-            return new Box(this.x, this.y, this.size);
+            return new Box(this.x, this.y, this.n);
         }
 
         moveToAndGrow(box: Box) {
-            this.size = box.size;
+            this.n = box.n;
 
             return Promise.all([
                 this.moveTo(box.x, box.y), 
-                animate(this.displaySize, v => this.displaySize = v).to(box.size).in(100)
+                animate(this.displaySize, v => this.displaySize = v).to(box.n).in(AnimateDurationMs)
             ]);
         }
 
@@ -55,8 +59,8 @@
             return new Cell(x, y, n);
         }
 
-        static create(x: number, y: number, size: number) {
-            return new Cell(x, y, size);
+        static create(x: number, y: number, n: number) {
+            return new Cell(x, y, n);
         }
     }
 }

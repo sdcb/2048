@@ -8,7 +8,7 @@
         }
 
         getScore() {
-            return this.cells.reduce((a, b) => a + b.size, 0);
+            return this.cells.reduce((a, b) => a + b.n, 0);
         }
 
         getCells() {
@@ -36,10 +36,10 @@
                     if (nextCell === undefined) {
                         targetCell.x = position.x;
                         targetCell.y = position.y;
-                    } else if (combinedCells.indexOf(nextCell) === -1 && nextCell.size === targetCell.size) {
+                    } else if (combinedCells.indexOf(nextCell) === -1 && nextCell.n === targetCell.n) {
                         targetCell.x = position.x;
                         targetCell.y = position.y;
-                        targetCell.size += nextCell.size;
+                        targetCell.n += nextCell.n;
                         nextCell.deleted = true;
                         combinedCells.push(cell);
                         break;
@@ -136,10 +136,10 @@
 
         constructor(public size: Vector2d) {
             let array = [
-                [2, 4, 0, 0], 
+                [0, 0, 0, 0], 
+                [0, 0, 0, 0], 
+                [0, 0, 0, 0], 
                 [8, 0, 0, 0], 
-                [16, 2, 0, 0], 
-                [1024, 256, 8, 0], 
             ];
             this.initializeWithArray(array);
         }
