@@ -50,9 +50,13 @@
             ]);
         }
 
-        static createAt(x: number, y: number) {
+        static createRandomAt(x: number, y: number) {
             var n = Math.random() < 0.9 ? 2 : 4;
             return new Cell(x, y, n);
+        }
+
+        static create(x: number, y: number, size: number) {
+            return new Cell(x, y, size);
         }
     }
 }

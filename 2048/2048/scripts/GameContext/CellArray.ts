@@ -22,6 +22,8 @@
 
             let cellsOrdered = this.cellsOrderByDirection(direction);
 
+            let combinedCells = Array<Cell>();
+            let moved = false;
             cellsOrdered.map(cell => {
                 if (cell.deleted) return;
 
@@ -34,37 +36,45 @@
                     if (nextCell === undefined) {
                         targetCell.x = position.x;
                         targetCell.y = position.y;
-                    } else if (nextCell.size === targetCell.size) {
+                    } else if (combinedCells.indexOf(nextCell) === -1 && nextCell.size === targetCell.size) {
                         targetCell.x = position.x;
                         targetCell.y = position.y;
                         targetCell.size += nextCell.size;
                         nextCell.deleted = true;
+                        combinedCells.push(cell);
+                        break;
                     } else {
                         break;
                     }
                 }
-                return cell.moveToAndGrow(targetCell);
+                if (targetCell.x !== cell.x || targetCell.y !== cell.y) {
+                    moved = true;
+                    return cell.moveToAndGrow(targetCell);
+                }
             });
-            this.cells = this.cells.filter(x => x.deleted === false);
 
-            let newCell = this.newRandomCell();
-            if (newCell === null) {
-                this.gameOver = true;
-            } else {
-                this.cells.push(newCell);
+            if (moved) {
+                this.cells = this.cells.filter(x => x.deleted === false);
+
+                let newCell = this.newRandomCell();
+                if (newCell === null) {
+                    this.gameOver = true;
+                } else {
+                    this.cells.push(newCell);
+                }
             }
         }
 
         private cellsOrderByDirection(direction: Direction) {
             switch (direction) {
                 case Direction.Up:
-                    return this.cells.sort((a, b) => b.y - a.y);
-                case Direction.Down:
                     return this.cells.sort((a, b) => a.y - b.y);
+                case Direction.Down:
+                    return this.cells.sort((a, b) => b.y - a.y);
                 case Direction.Left:
-                    return this.cells.sort((a, b) => b.x - a.x);
-                case Direction.Right:
                     return this.cells.sort((a, b) => a.x - b.x);
+                case Direction.Right:
+                    return this.cells.sort((a, b) => b.x - a.x);
                 default:
                     throw new Error(`Unknown Direction: ${direction}.`);
             }
@@ -95,7 +105,7 @@
 
             let randomIndex = Math.floor(emptyPositions.length * Math.random());
             let randomPosition = emptyPositions[randomIndex];
-            return Cell.createAt(randomPosition.x, randomPosition.y);
+            return Cell.createRandomAt(randomPosition.x, randomPosition.y);
         }
 
         private getCellTable() {
@@ -125,8 +135,28 @@
         }
 
         constructor(public size: Vector2d) {
+            let array = [
+                [2, 4, 0, 0], 
+                [8, 0, 0, 0], 
+                [16, 2, 0, 0], 
+                [1024, 256, 8, 0], 
+            ];
+            this.initializeWithArray(array);
+        }
+
+        initialize() {
             this.cells.push(NN(this.newRandomCell()));
             this.cells.push(NN(this.newRandomCell()));
+        }
+
+        initializeWithArray(array: Array<Array<number>>) {
+            array.forEach((row, y) => {
+                row.forEach((size, x) => {
+                    if (size !== 0) {
+                        this.cells.push(Cell.create(x, y, size));
+                    }
+                });
+            });
         }
 
         public static create() {
