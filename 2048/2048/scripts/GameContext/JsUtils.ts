@@ -16,8 +16,8 @@
     }
 
     class AnimateToContext {
-        to(toValue: number) {
-            this.ctx.toValue = toValue;
+        to(finalValue: number) {
+            this.ctx.finalValue = finalValue;
             return new AnimateInContext(this.ctx);
         }
 
@@ -38,7 +38,7 @@
     }
 
     class AnimateContext {
-        toValue: number;
+        finalValue: number;
         durationInMs: number;
         startTime: number;
 
@@ -63,11 +63,13 @@
             let elapsedMs = new Date().getTime() - this.startTime;
             let percent = elapsedMs / this.durationInMs;
 
-            let currentValue = this.intialValue + (this.toValue - this.intialValue) * percent;
+            let currentValue = this.intialValue + (this.finalValue - this.intialValue) * percent;
             this.setValue(currentValue);
 
             if (percent < 1) {
                 requestAnimationFrame(() => this.update());
+            } else {
+                this.setValue(this.finalValue);
             }
         }
     }
