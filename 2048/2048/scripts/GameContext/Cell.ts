@@ -47,11 +47,7 @@
 
         moveToAndGrow(box: Box) {
             this.n = box.n;
-
-            return $.when([
-                this.moveTo(box.x, box.y), 
-                animate(this.displaySize, v => this.displaySize = v).to(box.n).in(AnimateDurationMs)
-            ]);
+            return this.moveTo(box.x, box.y);
         }
 
         static createRandomAt(x: number, y: number) {

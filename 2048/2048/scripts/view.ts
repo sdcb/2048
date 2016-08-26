@@ -71,13 +71,13 @@
                 let attr = this.cellAttr(cell.n);
 
                 this.ctx.save();
+
+                this.ctx.scale(cell.displaySize, cell.displaySize);
                 this.ctx.fillStyle = attr.background;
                 this.ctx.fillRect(
                     cell.displayX * blockWidth + 1,
-                    cell.displayY * blockHeight + 1, blockWidth - 1, blockHeight - 1);
-                this.ctx.restore();
-
-                this.ctx.save();
+                    cell.displayY * blockHeight + 1, blockWidth - 2, blockHeight - 2);
+                
                 this.ctx.fillStyle = attr.color;
                 this.ctx.font = `${attr.fontSize}px Arial`;
                 this.ctx.textBaseline = "middle";
@@ -85,6 +85,7 @@
                 this.ctx.fillText(cell.n.toString(),
                     cell.displayX * blockWidth + blockWidth / 2,
                     cell.displayY * blockHeight + blockWidth / 2);
+
                 this.ctx.restore();
             }
         }
