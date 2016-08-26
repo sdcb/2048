@@ -19,13 +19,16 @@
             canvasHammer.get("swipe").set({ direction: Hammer.DIRECTION_ALL });
             canvasHammer.on("swipe", (ev: HammerInput) => {
                 let swipeMap = {
+                    [Hammer.DIRECTION_NONE]: null, 
                     [Hammer.DIRECTION_UP]: Direction.Up,
                     [Hammer.DIRECTION_DOWN]: Direction.Down,
                     [Hammer.DIRECTION_LEFT]: Direction.Left,
                     [Hammer.DIRECTION_RIGHT]: Direction.Right
                 };
                 let direction = swipeMap[ev.direction];
-                return this.swiped(direction);
+                if (direction !== null) {
+                    return this.swiped(direction);
+                }
             });
 
             this.requestRequestCall();
