@@ -15,7 +15,7 @@
             canvas.width = Math.min(innerWidth, innerHeight);
             canvas.height = Math.min(innerWidth, innerHeight);
 
-            var canvasHammer = new Hammer(canvas);
+            var canvasHammer = new Hammer(document.body);
             canvasHammer.get("swipe").set({ direction: Hammer.DIRECTION_ALL });
             canvasHammer.on("swipe", (ev: HammerInput) => {
                 let swipeMap = {
