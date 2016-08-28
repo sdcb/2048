@@ -1,6 +1,7 @@
 ﻿namespace _2048 {
     export class CellArray {
         private cells = Array<Cell>();
+        private cellHistory = Array<Array<Box>>();
         private gameOver = false;
 
         isGameOver() {
@@ -55,6 +56,7 @@
 
             if (moved) {
                 this.cells = this.cells.filter(x => x.deleted === false);
+                this.pushCellHistory();
 
                 let newCell = this.newRandomCell();
                 if (newCell === null) {
@@ -63,6 +65,24 @@
                     this.cells.push(newCell);
                 }
             }
+        }
+
+        requestBack() {
+            return this.popHistory();
+        }
+
+        private pushCellHistory() {
+            this.cellHistory.push(this.cells.map(v => v.getBox()));
+        }
+
+        private popHistory() {
+            let history = this.cellHistory.pop();
+            if (history !== undefined) {
+                let array = history.map(v => Cell.createByBox(v));
+                this.cells = array;
+                return true;
+            }
+            return false;
         }
 
         private cellsOrderByDirection(direction: Direction) {

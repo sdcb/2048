@@ -15,6 +15,8 @@
             canvas.width = Math.min(innerWidth, innerHeight);
             canvas.height = Math.min(innerWidth, innerHeight);
 
+            document.addEventListener("backbutton", ev => this.backButtonClicked(ev));
+
             var canvasHammer = new Hammer(document.body);
             canvasHammer.get("swipe").set({ direction: Hammer.DIRECTION_ALL });
             canvasHammer.on("swipe", (ev: HammerInput) => {
@@ -46,6 +48,7 @@
 
         abstract render();
         abstract swiped(direction: Direction);
+        abstract backButtonClicked(ev: Event);
     }
 
     export class GameView extends GameViewBase {
@@ -57,6 +60,10 @@
 
         swiped(direction: Direction) {
             this.game.requestDirection(direction);
+        }
+
+        backButtonClicked(ev: Event) {
+            this.game.requestBack();
         }
 
         render() {

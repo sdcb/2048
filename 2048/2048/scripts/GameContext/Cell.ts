@@ -58,5 +58,9 @@
         static create(x: number, y: number, n: number) {
             return new Cell(x, y, n);
         }
+
+        static createByBox(box: Box) {
+            return Cell.create(box.x, box.y, box.n);
+        }
     }
 }
