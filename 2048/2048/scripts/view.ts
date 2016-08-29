@@ -21,7 +21,7 @@
             canvasHammer.get("swipe").set({ direction: Hammer.DIRECTION_ALL });
             canvasHammer.on("swipe", (ev: HammerInput) => {
                 let swipeMap = {
-                    [Hammer.DIRECTION_NONE]: null, 
+                    [Hammer.DIRECTION_NONE]: null,
                     [Hammer.DIRECTION_UP]: Direction.Up,
                     [Hammer.DIRECTION_DOWN]: Direction.Down,
                     [Hammer.DIRECTION_LEFT]: Direction.Left,
@@ -56,14 +56,22 @@
 
         constructor() {
             super(<HTMLCanvasElement>document.querySelector("canvas"));
+            this.setScore();
+        }
+
+        setScore() {
+            let element = NN(document.getElementById("score"));
+            element.textContent = this.game.getScore().toString();
         }
 
         swiped(direction: Direction) {
             this.game.requestDirection(direction);
+            this.setScore();
         }
 
         backButtonClicked(ev: Event) {
             this.game.requestBack();
+            this.setScore();
         }
 
         render() {
@@ -102,7 +110,7 @@
 
         numberMap(n: number) {
             let ns = createArray<number>(20).map((v, i) => 2 << i);
-            return ns[Math.log(n) / Math.log(2)].toString();
+            return ns[Math.log(n) / Math.log(2) - 1].toString();
         }
 
         cellAttr(size: number) {
