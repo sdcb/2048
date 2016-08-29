@@ -82,22 +82,27 @@
 
                 this.ctx.save();
 
+                this.ctx.translate(
+                    cell.displayX * blockWidth + blockWidth / 2,
+                    cell.displayY * blockHeight + blockHeight / 2);
                 this.ctx.scale(cell.displaySize, cell.displaySize);
                 this.ctx.fillStyle = attr.background;
                 this.ctx.fillRect(
-                    cell.displayX * blockWidth + 1,
-                    cell.displayY * blockHeight + 1, blockWidth - 2, blockHeight - 2);
-                
+                    -blockWidth / 2 + 1, -blockHeight / 2 + 1, blockWidth - 2, blockHeight - 2);
+
                 this.ctx.fillStyle = attr.color;
                 this.ctx.font = `${attr.fontSize}px Arial`;
                 this.ctx.textBaseline = "middle";
                 this.ctx.textAlign = "center";
-                this.ctx.fillText(cell.n.toString(),
-                    cell.displayX * blockWidth + blockWidth / 2,
-                    cell.displayY * blockHeight + blockWidth / 2);
+                this.ctx.fillText(this.numberMap(cell.n), 0, 0);
 
                 this.ctx.restore();
             }
+        }
+
+        numberMap(n: number) {
+            let ns = createArray<number>(20).map((v, i) => 2 << i);
+            return ns[Math.log(n) / Math.log(2)].toString();
         }
 
         cellAttr(size: number) {
