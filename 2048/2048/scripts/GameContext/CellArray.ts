@@ -21,6 +21,7 @@
                 return;
             }
 
+            let history = this.serializeCurrentStatus();
             let cellsOrdered = this.cellsOrderByDirection(direction);
 
             let combinedCells = Array<Cell>();
@@ -56,7 +57,7 @@
 
             if (moved) {
                 this.cells = this.cells.filter(x => x.deleted === false);
-                this.pushCellHistory();
+                this.pushCellHistory(history);
 
                 let newCell = this.newRandomCell();
                 if (newCell === null) {
@@ -71,9 +72,13 @@
             return this.popHistory();
         }
 
-        private pushCellHistory() {
-            this.cellHistory.push(this.cells.map(v => v.getBox()));
+        private pushCellHistory(status: Box[]) {
+            this.cellHistory.push(status);
         }
+
+        private serializeCurrentStatus() {
+            return this.cells.map(v => v.getBox());
+        } 
 
         private popHistory() {
             let history = this.cellHistory.pop();
