@@ -166,6 +166,16 @@
                     color: "#f9f6f2",
                     background: "#3c3a32",
                     fontSize: 30
+                },
+                [8192]: {
+                    color: "#f9f6f2",
+                    background: "#3c3a32",
+                    fontSize: 30
+                },
+                [16384]: {
+                    color: "#f9f6f2",
+                    background: "#3c3a32",
+                    fontSize: 25
                 }
             };
             let defaultSetting = {
