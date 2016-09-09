@@ -29,7 +29,8 @@
     class AnimateInContext {
         in(durationInMs: number) {
             this.ctx.durationInMs = durationInMs;
-            return this.ctx.startUpdate();
+            this.ctx.startUpdate();
+            return this.ctx.defer.promise();
         }
 
         constructor(

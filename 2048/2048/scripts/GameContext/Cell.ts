@@ -35,7 +35,7 @@
             this.x = x;
             this.y = y;
 
-            return $.when([
+            return $.when(...[
                 animate(this.displayX, v => this.displayX = v).to(x).in(AnimateDurationMs),
                 animate(this.displayY, v => this.displayY = v).to(y).in(AnimateDurationMs)
             ]);
